@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta 
+     name='viewport' 
+     content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' 
+/>
+<script
+src="https://code.jquery.com/jquery-3.4.1.js"
+integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+crossorigin="anonymous"></script>
+<style>
+    *{	margin:0;
+    	padding:0;}
+    .elem{
+    	width: 10000vw;
+    	height: 5vh;
+    	background-color: #eeeeee;
+        background-size: auto 100vh;
+        background-repeat: no-repeat;
+        position: fixed;
+        background-blend-mode: darken;
+    }
+    .elem>div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#ffffff,#1b1b1b,#ffffff);
+    mix-blend-mode: color-burn;
+    }
+    .animate{
+        transition: margin-left 0.15s
+    }
+    .scroll{
+    	height: 1000vh;
+    }
+    /*body{filter: invert(1)}*/
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.js"></script>
+<script type="text/javascript">
+scrollHoriz();
+var scrollLeft=0;
+function scrollHoriz() {
+    $('html, body, *').off('mousewheel').mousewheel(function(e, delta) {
+  	     // console.log(delta)
+        this.scrollLeft -= (delta * 10);
+        e.preventDefault();
+        scrollLeft=this.scrollLeft
+    });
+}
+// var scrollspeed = 0.7
+$(document).ready(function(){
+    var h = window.innerHeight
+    var w = window.innerWidth
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+    back_img = [['url(img/img0001.png)',1],
+                ['url(img/img0002.png)',2],
+                ['url(img/img0003.png)',3],
+                ['url(img/img0004.png)',4],
+                ['url(img/img0005.png)',5],
+                ['url(img/img0006.png)',6],
+                ['url(img/img0007.png)',7],
+                ['url(img/img0008.png)',8],
+                ['url(img/img0009.png)',9],
+                ['url(img/img0010.png)',10],
+                ['url(img/img0011.png)',11],
+                ['url(img/img0012.png)',12],
+                ['url(img/img0013.png)',13],
+                ['url(img/img0014.png)',14],
+                ['url(img/img0015.png)',15],
+                ['url(img/img0016.png)',16],
+                ['url(img/img0017.png)',17],
+                ['url(img/img0018.png)',18],
+                ['url(img/img0019.png)',19],
+                ['url(img/img0020.png)',20],
+                ['url(img/img0021.png)',21],
+                ['url(img/img0022.png)',22],
+                ['url(img/img0023.png)',23],
+                ['url(img/img0024.png)',24],
+                ['url(img/img0025.png)',25],
+                ['url(img/img0026.png)',26],
+                ]
+        var div_amount = 40
+    var density = 0.6
+    create_div()
+    function create_div(){
+        // console.log('hey')
+        var div_amount_array = []
+        for (var i = div_amount; i >= 1; i--) {
+            div_amount_array.push(i)
+            div_amount_array = shuffle(div_amount_array)
+            if(i == 1){
+                for (var j = div_amount_array.length - 1; j >= 0; j--) {
+                    $('body').append('<div class="elem elem_'+div_amount_array[j]+'"><div></div></div>')
+                    if(j == 0){
+                        // mix()
+                        place()
+                    }
+                }
+            }
+        }
+    }
+    function mix(){
+        var num_array = []
+        for (var i = back_img.length - 1; i >= 0; i--) {
+            num_array.push(i+1)
+            num_array = shuffle(num_array)
+            if(i == 0){
+                for (var j = back_img.length - 1; j >= 0; j--) {
+                    back_img[j][1] = num_array[j]
+                    if(j==0){
+                        // console.log(back_img)
+                        place()
+                    }
+                }
+            }
+        }
+    }
+    function place() {
+        $('.elem').each(function(index){
+            $(window).scrollTop(h/back_img.length)
+            var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]*density
+
+            var pos_top = index*(h/$('.elem').length)
+            $(this).css({'top' : pos_top + 'px'})
+            $(this).css({'height' : (h/$('.elem').length) + 'px'})
+            console.log(index*0.2)
+            console.log(index*0.2)
+            // $(this).css({'transition-delay' : index*0.005 + 's'})
+            $(this).css({'background-position' : get_back_pos(speedforsec, pos_top)})
+            // console.log(get_back_pos(speedforsec, pos_top))
+            var back_img_name = []
+            for (var i = back_img.length - 1; i >= 0; i--) {
+                back_img_name.push(back_img[i][0])
+            }
+            $(this).css({'background-image' : back_img_name.join() })
+        })
+        setTimeout(function(){
+            animate()
+        },100)
+    }
+    function get_back_pos(speedforsec,pos_top){
+        var array = []
+        for (var i = 0; i < back_img.length; i++) {
+            // console.log(parseInt(back_img[i][1]))
+            array.push(parseInt(back_img[i][1])*speedforsec*(w/back_img.length) + 'px '+(-1*pos_top)+'px')
+            if(i == back_img.length-1){
+                return array.join()
+            }
+        }
+    }
+    $(window).scroll(function (event) {
+        var scroll = $(window).scrollTop();
+        syncscroll(scroll)
+    });
+
+
+
+    var animate_counter = 0
+    function animate(){
+        $('.elem').addClass('animate')
+        animate_counter++
+        if(animate_counter < back_img.length){
+                syncscroll(w/back_img.length*back_img[animate_counter][1]*density)
+                // console.log(back_img[animate_counter][1])
+                scroll_ani = setTimeout(function(){
+                    animate()
+                },300)
+        }else{
+            $('.elem').removeClass('animate')
+        }
+
+    }
+    function syncscroll(scroll){
+        $('.elem').each(function(){
+            var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]
+            // console.log(-1*speedforsec*scroll)
+            $(this).css({'margin-left':-1*speedforsec*scroll})
+        })
+    }
+
+})
+</script>
+</head>
+<body>
+	<div class="scroll"></div>
+</body>
