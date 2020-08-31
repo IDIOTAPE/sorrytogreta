@@ -12,14 +12,16 @@ crossorigin="anonymous"></script>
 <style>
     *{	margin:0;
     	padding:0;}
+        body{transform: rotate();}
     .elem{
-    	width: 10000vw;
+    	width: 50000vw;
     	height: 5vh;
     	background-color: #eeeeee;
         background-size: auto 100vh;
         background-repeat: no-repeat;
         position: fixed;
         background-blend-mode: darken;
+        z-index: 10
     }
     .elem>div{
     position: absolute;
@@ -28,11 +30,26 @@ crossorigin="anonymous"></script>
     background: linear-gradient(#ffffff,#1b1b1b,#ffffff);
     mix-blend-mode: color-burn;
     }
+    .elem>div>div{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    }
     .animate{
-        transition: margin-left 0.15s
+        transition: margin-left 0.175s ease-in-out
     }
     .scroll{
-    	height: 1000vh;
+    	height: 1300vh;
+    }
+    .back{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+     background: blue;
+    display: none;
     }
     /*body{filter: invert(1)}*/
 </style>
@@ -64,41 +81,321 @@ $(document).ready(function(){
         }
         return array;
     }
-    back_img = [['url(img/img0001.png)',1],
-                ['url(img/img0002.png)',2],
-                ['url(img/img0003.png)',3],
-                ['url(img/img0004.png)',4],
-                ['url(img/img0005.png)',5],
-                ['url(img/img0006.png)',6],
-                ['url(img/img0007.png)',7],
-                ['url(img/img0008.png)',8],
-                ['url(img/img0009.png)',9],
-                ['url(img/img0010.png)',10],
-                ['url(img/img0011.png)',11],
-                ['url(img/img0012.png)',12],
-                ['url(img/img0013.png)',13],
-                ['url(img/img0014.png)',14],
-                ['url(img/img0015.png)',15],
-                ['url(img/img0016.png)',16],
-                ['url(img/img0017.png)',17],
-                ['url(img/img0018.png)',18],
-                ['url(img/img0019.png)',19],
-                ['url(img/img0020.png)',20],
-                ['url(img/img0021.png)',21],
-                ['url(img/img0022.png)',22],
-                ['url(img/img0023.png)',23],
-                ['url(img/img0024.png)',24],
-                ['url(img/img0025.png)',25],
-                ['url(img/img0026.png)',26],
+    back_img = [
+                ['url(img_3/img0001.png)',1],
+                ['url(img_3/img0002.png)',2],
+                ['url(img_3/img0003.png)',3],
+                ['url(img_3/img0004.png)',4],
+                ['url(img_3/img0005.png)',5],
+                ['url(img_3/img0006.png)',6],
+                ['url(img_3/img0007.png)',7],
+                ['url(img_3/img0008.png)',8],
+                ['url(img_3/img0009.png)',9],
+                ['url(img_3/img0010.png)',10],
+                ['url(img_3/img0011.png)',11],
+                ['url(img_3/img0012.png)',12],
+                ['url(img_3/img0013.png)',13],
+                ['url(img_3/img0014.png)',14],
+                ['url(img_3/img0015.png)',15],
+                ['url(img_3/img0191.png)',191],
+                ['url(img_3/img0016.png)',16],
+                ['url(img_3/img0192.png)',192],
+                ['url(img_3/img0017.png)',17],
+                ['url(img_3/img0193.png)',193],
+                ['url(img_3/img0018.png)',18],
+                ['url(img_3/img0194.png)',194],
+                ['url(img_3/img0019.png)',19],
+                ['url(img_3/img0195.png)',195],
+                ['url(img_3/img0020.png)',20],
+                ['url(img_3/img0021.png)',21],
+                ['url(img_3/img0022.png)',22],
+                ['url(img_3/img0023.png)',23],
+                ['url(img_3/img0024.png)',24],
+                ['url(img_3/img0025.png)',25],
+                ['url(img_3/img0026.png)',26],
+                ['url(img_3/img0027.png)',27],
+                ['url(img_3/img0028.png)',28],
+                ['url(img_3/img0029.png)',29],
+                ['url(img_3/img0030.png)',30],
+                ['url(img_3/img0031.png)',31],
+                ['url(img_3/img0032.png)',32],
+                ['url(img_3/img0033.png)',33],
+                ['url(img_3/img0034.png)',34],
+                ['url(img_3/img0196.png)',196],
+                ['url(img_3/img0197.png)',197],
+                ['url(img_3/img0198.png)',198],
+                ['url(img_3/img0199.png)',199],
+                ['url(img_3/img0200.png)',200],
+                ['url(img_3/img0035.png)',35],
+                ['url(img_3/img0036.png)',36],
+                ['url(img_3/img0037.png)',37],
+                ['url(img_3/img0038.png)',38],
+                ['url(img_3/img0039.png)',39],
+                ['url(img_3/img0040.png)',40],
+                ['url(img_3/img0041.png)',41],
+                ['url(img_3/img0042.png)',42],
+                ['url(img_3/img0043.png)',43],
+                ['url(img_3/img0044.png)',44],
+                ['url(img_3/img0045.png)',45],
+                ['url(img_3/img0046.png)',46],
+                ['url(img_3/img0047.png)',47],
+                ['url(img_3/img0048.png)',48],
+                ['url(img_3/img0049.png)',49],
+                ['url(img_3/img0050.png)',50],
+                ['url(img_3/img0051.png)',51],
+                ['url(img_3/img0052.png)',52],
+                ['url(img_3/img0053.png)',53],
+                ['url(img_3/img0054.png)',54],
+                ['url(img_3/img0055.png)',55],
+                ['url(img_3/img0056.png)',56],
+                ['url(img_3/img0057.png)',57],
+                ['url(img_3/img0058.png)',58],
+                ['url(img_3/img0059.png)',59],
+                ['url(img_3/img0060.png)',60],
+                ['url(img_3/img0061.png)',61],
+                ['url(img_3/img0062.png)',62],
+                ['url(img_3/img0063.png)',63],
+                ['url(img_3/img0064.png)',64],
+                ['url(img_3/img0065.png)',65],
+                ['url(img_3/img0066.png)',66],
+                ['url(img_3/img0067.png)',67],
+                ['url(img_3/img0068.png)',68],
+                ['url(img_3/img0069.png)',69],
+                ['url(img_3/img0070.png)',70],
+                ['url(img_3/img0071.png)',71],
+                ['url(img_3/img0072.png)',72],
+                ['url(img_3/img0073.png)',73],
+                ['url(img_3/img0074.png)',74],
+                ['url(img_3/img0075.png)',75],
+                ['url(img_3/img0076.png)',76],
+                ['url(img_3/img0077.png)',77],
+                ['url(img_3/img0078.png)',78],
+                ['url(img_3/img0079.png)',79],
+                ['url(img_3/img0080.png)',80],
+                ['url(img_3/img0081.png)',81],
+                ['url(img_3/img0082.png)',82],
+                ['url(img_3/img0083.png)',83],
+                ['url(img_3/img0084.png)',84],
+                ['url(img_3/img0085.png)',85],
+                ['url(img_3/img0086.png)',86],
+                ['url(img_3/img0087.png)',87],
+                ['url(img_3/img0088.png)',88],
+                ['url(img_3/img0089.png)',89],
+                ['url(img_3/img0090.png)',90],
+                ['url(img_3/img0091.png)',91],
+                ['url(img_3/img0092.png)',92],
+                ['url(img_3/img0093.png)',93],
+                ['url(img_3/img0094.png)',94],
+                ['url(img_3/img0095.png)',95],
+                ['url(img_3/img0096.png)',96],
+                ['url(img_3/img0097.png)',97],
+                ['url(img_3/img0098.png)',98],
+                ['url(img_3/img0099.png)',99],
+                ['url(img_3/img0100.png)',100],
+                ['url(img_3/img0101.png)',101],
+                ['url(img_3/img0102.png)',102],
+                ['url(img_3/img0103.png)',103],
+                ['url(img_3/img0104.png)',104],
+                ['url(img_3/img0105.png)',105],
+                ['url(img_3/img0106.png)',106],
+                ['url(img_3/img0107.png)',107],
+                ['url(img_3/img0108.png)',108],
+                ['url(img_3/img0109.png)',109],
+                ['url(img_3/img0110.png)',110],
+                ['url(img_3/img0111.png)',111],
+                ['url(img_3/img0112.png)',112],
+                ['url(img_3/img0113.png)',113],
+                ['url(img_3/img0114.png)',114],
+                ['url(img_3/img0115.png)',115],
+                ['url(img_3/img0116.png)',116],
+                ['url(img_3/img0117.png)',117],
+                ['url(img_3/img0118.png)',118],
+                ['url(img_3/img0119.png)',119],
+                ['url(img_3/img0120.png)',120],
+                ['url(img_3/img0121.png)',121],
+                ['url(img_3/img0122.png)',122],
+                ['url(img_3/img0123.png)',123],
+                ['url(img_3/img0124.png)',124],
+                ['url(img_3/img0125.png)',125],
+                ['url(img_3/img0126.png)',126],
+                ['url(img_3/img0127.png)',127],
+                ['url(img_3/img0128.png)',128],
+                ['url(img_3/img0129.png)',129],
+                ['url(img_3/img0130.png)',130],
+                ['url(img_3/img0131.png)',131],
+                ['url(img_3/img0132.png)',132],
+                ['url(img_3/img0133.png)',133],
+                ['url(img_3/img0134.png)',134],
+                ['url(img_3/img0135.png)',135],
+                ['url(img_3/img0136.png)',136],
+                ['url(img_3/img0137.png)',137],
+                ['url(img_3/img0138.png)',138],
+                ['url(img_3/img0139.png)',139],
+                ['url(img_3/img0140.png)',140],
+                ['url(img_3/img0141.png)',141],
+                ['url(img_3/img0142.png)',142],
+                ['url(img_3/img0143.png)',143],
+                ['url(img_3/img0144.png)',144],
+                ['url(img_3/img0145.png)',145],
+                ['url(img_3/img0146.png)',146],
+                ['url(img_3/img0147.png)',147],
+                ['url(img_3/img0148.png)',148],
+                ['url(img_3/img0149.png)',149],
+                ['url(img_3/img0150.png)',150],
+                ['url(img_3/img0151.png)',151],
+                ['url(img_3/img0152.png)',152],
+                ['url(img_3/img0153.png)',153],
+                ['url(img_3/img0154.png)',154],
+                ['url(img_3/img0155.png)',155],
+                ['url(img_3/img0156.png)',156],
+                ['url(img_3/img0157.png)',157],
+                ['url(img_3/img0158.png)',158],
+                ['url(img_3/img0159.png)',159],
+                ['url(img_3/img0160.png)',160],
+                ['url(img_3/img0161.png)',161],
+                ['url(img_3/img0162.png)',162],
+                ['url(img_3/img0163.png)',163],
+                ['url(img_3/img0164.png)',164],
+                ['url(img_3/img0165.png)',165],
+                ['url(img_3/img0166.png)',166],
+                ['url(img_3/img0167.png)',167],
+                ['url(img_3/img0168.png)',168],
+                ['url(img_3/img0169.png)',169],
+                ['url(img_3/img0170.png)',170],
+                ['url(img_3/img0171.png)',171],
+                ['url(img_3/img0172.png)',172],
+                ['url(img_3/img0173.png)',173],
+                ['url(img_3/img0174.png)',174],
+                ['url(img_3/img0175.png)',175],
+                ['url(img_3/img0176.png)',176],
+                ['url(img_3/img0177.png)',177],
+                ['url(img_3/img0178.png)',178],
+                ['url(img_3/img0179.png)',179],
+                ['url(img_3/img0180.png)',180],
+                ['url(img_3/img0181.png)',181],
+                ['url(img_3/img0182.png)',182],
+                ['url(img_3/img0183.png)',183],
+                ['url(img_3/img0184.png)',184],
+                ['url(img_3/img0185.png)',185],
+                ['url(img_3/img0186.png)',186],
+                ['url(img_3/img0187.png)',187],
+                ['url(img_3/img0188.png)',188],
+                ['url(img_3/img0189.png)',189],
+                ['url(img_3/img0190.png)',190],
+                ['url(img_3/img0191.png)',191],
+                ['url(img_3/img0192.png)',192],
+                ['url(img_3/img0193.png)',193],
+                ['url(img_3/img0194.png)',194],
+                ['url(img_3/img0195.png)',195],
+                ['url(img_3/img0196.png)',196],
+                ['url(img_3/img0197.png)',197],
+                ['url(img_3/img0198.png)',198],
+                ['url(img_3/img0199.png)',199],
+                ['url(img_3/img0200.png)',200],
+                ['url(img_3/img0201.png)',201],
+                ['url(img_3/img0202.png)',202],
+                ['url(img_3/img0203.png)',203],
+                ['url(img_3/img0204.png)',204],
+                ['url(img_3/img0205.png)',205],
+                ['url(img_3/img0206.png)',206],
+                ['url(img_3/img0207.png)',207],
+                ['url(img_3/img0208.png)',208],
+                ['url(img_3/img0209.png)',209],
+                ['url(img_3/img0210.png)',210],
+                ['url(img_3/img0211.png)',211],
+                ['url(img_3/img0212.png)',212],
+                ['url(img_3/img0213.png)',213],
+                ['url(img_3/img0214.png)',214],
+                ['url(img_3/img0215.png)',215],
+                ['url(img_3/img0216.png)',216],
+                ['url(img_3/img0217.png)',217],
+                ['url(img_3/img0218.png)',218],
+                ['url(img_3/img0219.png)',219],
+                ['url(img_3/img0220.png)',220],
+                ['url(img_3/img0221.png)',221],
+                ['url(img_3/img0222.png)',222],
+                ['url(img_3/img0223.png)',223],
+                ['url(img_3/img0224.png)',224],
+                ['url(img_3/img0225.png)',225],
+                ['url(img_3/img0226.png)',226],
+                ['url(img_3/img0227.png)',227],
+                ['url(img_3/img0228.png)',228],
+                ['url(img_3/img0229.png)',229],
+                ['url(img_3/img0230.png)',230],
+                ['url(img_3/img0231.png)',231],
+                ['url(img_3/img0232.png)',232],
+                ['url(img_3/img0233.png)',233],
+                ['url(img_3/img0234.png)',234],
+                ['url(img_3/img0235.png)',235],
+                ['url(img_3/img0236.png)',236],
+                ['url(img_3/img0237.png)',237],
+                ['url(img_3/img0238.png)',238],
+                ['url(img_3/img0239.png)',239],
+                ['url(img_3/img0240.png)',240],
+                ['url(img_3/img0241.png)',241],
+                ['url(img_3/img0242.png)',242],
+                ['url(img_3/img0243.png)',243],
+                ['url(img_3/img0244.png)',244],
+                ['url(img_3/img0245.png)',245],
+                ['url(img_3/img0246.png)',246],
+                ['url(img_3/img0247.png)',247],
+                ['url(img_3/img0248.png)',248],
+                ['url(img_3/img0249.png)',249],
+                ['url(img_3/img0250.png)',250],
+                ['url(img_3/img0251.png)',251],
+                ['url(img_3/img0252.png)',252],
+                ['url(img_3/img0253.png)',253],
+                ['url(img_3/img0254.png)',254],
+                ['url(img_3/img0255.png)',255],
+                ['url(img_3/img0256.png)',256],
+                ['url(img_3/img0257.png)',257],
+                ['url(img_3/img0258.png)',258],
+                ['url(img_3/img0259.png)',259],
+                ['url(img_3/img0260.png)',260],
+                ['url(img_3/img0261.png)',261],
+                ['url(img_3/img0262.png)',262],
+                ['url(img_3/img0263.png)',263],
+                ['url(img_3/img0264.png)',264],
+                ['url(img_3/img0265.png)',265],
+                ['url(img_3/img0266.png)',266],
+                ['url(img_3/img0267.png)',267],
+                ['url(img_3/img0268.png)',268],
+                ['url(img_3/img0269.png)',269],
+                ['url(img_3/img0270.png)',270],
+                ['url(img_3/img0271.png)',271],
+                ['url(img_3/img0272.png)',272],
+                ['url(img_3/img0273.png)',273],
+                ['url(img_3/img0274.png)',274],
+                ['url(img_3/img0275.png)',275],
+                ['url(img_3/img0276.png)',276],
+                ['url(img_3/img0277.png)',277],
+                ['url(img_3/img0278.png)',278],
+                ['url(img_3/img0279.png)',268],
+                ['url(img_3/img0280.png)',269],
+                ['url(img_3/img0281.png)',270],
+                ['url(img_3/img0282.png)',271],
+                ['url(img_3/img0283.png)',272],
+                ['url(img_3/img0284.png)',273],
+                ['url(img_3/img0285.png)',274],
+                ['url(img_3/img0286.png)',275],
+                ['url(img_3/img0287.png)',276],
+                ['url(img_3/img0288.png)',277]
                 ]
-        var div_amount = 40
-    var density = 0.6
+        var div_amount = 60
+    var density = 9.5
     create_div()
     function create_div(){
+        for (var i = back_img.length - 1; i >= 0; i--) {
+            back_img[i][1] = i
+        }
         // console.log('hey')
         var div_amount_array = []
         for (var i = div_amount; i >= 1; i--) {
-            div_amount_array.push(i)
+            if(i<10){
+                        div_amount_array.push(10)}
+                        else{
+                        div_amount_array.push(Math.floor(i/3))
+                        }
             div_amount_array = shuffle(div_amount_array)
             if(i == 1){
                 for (var j = div_amount_array.length - 1; j >= 0; j--) {
@@ -141,7 +438,7 @@ $(document).ready(function(){
             $(this).css({'background-position' : get_back_pos(speedforsec, pos_top)})
             // console.log(get_back_pos(speedforsec, pos_top))
             var back_img_name = []
-            for (var i = back_img.length - 1; i >= 0; i--) {
+            for (var i = 0; i < back_img.length; i++) {
                 back_img_name.push(back_img[i][0])
             }
             $(this).css({'background-image' : back_img_name.join() })
@@ -154,7 +451,7 @@ $(document).ready(function(){
         var array = []
         for (var i = 0; i < back_img.length; i++) {
             // console.log(parseInt(back_img[i][1]))
-            array.push(parseInt(back_img[i][1])*speedforsec*(w/back_img.length) + 'px '+(-1*pos_top)+'px')
+            array.push(parseInt(back_img[i][1])*speedforsec*(w/back_img.length)+(w/2 - 4/6*h) + 'px '+(-1*pos_top)+'px')
             if(i == back_img.length-1){
                 return array.join()
             }
@@ -171,12 +468,79 @@ $(document).ready(function(){
     function animate(){
         $('.elem').addClass('animate')
         animate_counter++
+        // if(animate_counter == 148){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 150){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 152){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 154){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 156){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 158){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 160){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 162){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 164){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 166){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 168){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 170){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 172){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 174){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 176){
+        //     animate_counter++
+        // }
+        // if(animate_counter == 178){
+        //     animate_counter++
+        // }
+        console.log(animate_counter)
+        if(animate_counter > 76 && animate_counter <97){
+            $('.elem').css({'background-color':'#9090903d'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(144 144 144), rgb(255 255 255 / 0%), rgb(255 255 255 / 0%), rgb(111 111 111))'})
+            $('body').css({'background-image':'url(bg.png)'})
+        }else if(animate_counter > 148 && animate_counter <162){
+            $('.elem').css({'background-color':'#9090903d'})
+            // $('.elem>div').css({'background':'linear-gradient(rgb(26 0 167), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgb(26 0 167))'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
+            $('.back').show()
+        }else if(animate_counter > 161 && animate_counter <198){
+            $('.elem').css({'background-color':'#9090903d'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
+            $('.back').show()
+        }else{
+        console.log('--------------------')
+            $('.elem').css({'background-color':'#eeeeee'})
+            $('.elem>div').css({'background':'linear-gradient(#ffffff, #1b1b1b, #ffffff)'})
+            $('.back').hide()
+        }
         if(animate_counter < back_img.length){
                 syncscroll(w/back_img.length*back_img[animate_counter][1]*density)
-                // console.log(back_img[animate_counter][1])
                 scroll_ani = setTimeout(function(){
                     animate()
-                },300)
+                },250)
         }else{
             $('.elem').removeClass('animate')
         }
@@ -195,4 +559,5 @@ $(document).ready(function(){
 </head>
 <body>
 	<div class="scroll"></div>
+    <div class="back"></div>
 </body>
