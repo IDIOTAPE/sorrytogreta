@@ -21,7 +21,7 @@ crossorigin="anonymous"></script>
         background-repeat: no-repeat;
         position: fixed;
         background-blend-mode: darken;
-        z-index: 10
+        z-index: 10;
     }
     .elem>div{
     position: absolute;
@@ -37,10 +37,17 @@ crossorigin="anonymous"></script>
     background-color: red;
     }
     .animate{
-        transition: margin-left 0.175s ease-in-out
+        transition: margin-left 0.125s ease-in-out
     }
-    .scroll{
-    	height: 1300vh;
+    .scrollX{
+        position: relative;
+        width: 3500vw;
+        height: 100%
+    }
+    .scrollY{
+        height: 12890vh;
+        width: 10%
+
     }
     .back{
     position: fixed;
@@ -48,24 +55,24 @@ crossorigin="anonymous"></script>
     height: 100vh;
     left: 0;
     top: 0;
-     background: blue;
+     /*background: blue;*/
     display: none;
     }
-    /*body{filter: invert(1)}*/
+    .wrapper{
+        width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: scroll;
+    z-index: 100000;
+    }
+    audio { display:none;}
+    body{overflow-x: hidden;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.js"></script>
 <script type="text/javascript">
-scrollHoriz();
-var scrollLeft=0;
-function scrollHoriz() {
-    $('html, body, *').off('mousewheel').mousewheel(function(e, delta) {
-  	     // console.log(delta)
-        this.scrollLeft -= (delta * 10);
-        e.preventDefault();
-        scrollLeft=this.scrollLeft
-    });
-}
 // var scrollspeed = 0.7
 $(document).ready(function(){
     var h = window.innerHeight
@@ -82,14 +89,14 @@ $(document).ready(function(){
         return array;
     }
     back_img = [
-                ['url(img_3/img0001.png)',1],
-                ['url(img_3/img0002.png)',2],
-                ['url(img_3/img0003.png)',3],
-                ['url(img_3/img0004.png)',4],
-                ['url(img_3/img0005.png)',5],
-                ['url(img_3/img0006.png)',6],
-                ['url(img_3/img0007.png)',7],
-                ['url(img_3/img0008.png)',8],
+                ['url(img_3/img0011.png)',1],
+                ['url(img_3/img0011.png)',2],
+                ['url(img_3/img0011.png)',3],
+                ['url(img_3/img0011.png)',4],
+                ['url(img_3/img0011.png)',5],
+                ['url(img_3/img0011.png)',6],
+                ['url(img_3/img0011.png)',7],
+                ['url(img_3/img0011.png)',8],
                 ['url(img_3/img0009.png)',9],
                 ['url(img_3/img0010.png)',10],
                 ['url(img_3/img0011.png)',11],
@@ -370,18 +377,19 @@ $(document).ready(function(){
                 ['url(img_3/img0276.png)',276],
                 ['url(img_3/img0277.png)',277],
                 ['url(img_3/img0278.png)',278],
-                ['url(img_3/img0279.png)',268],
-                ['url(img_3/img0280.png)',269],
-                ['url(img_3/img0281.png)',270],
-                ['url(img_3/img0282.png)',271],
-                ['url(img_3/img0283.png)',272],
-                ['url(img_3/img0284.png)',273],
-                ['url(img_3/img0285.png)',274],
-                ['url(img_3/img0286.png)',275],
-                ['url(img_3/img0287.png)',276],
-                ['url(img_3/img0288.png)',277]
+                ['url(img_3/img0279.png)',278],
+                ['url(img_3/img0280.png)',279],
+                ['url(img_3/img0281.png)',280],
+                ['url(img_3/img0282.png)',281],
+                ['url(img_3/img0283.png)',282],
+                ['url(img_3/img0284.png)',283],
+                ['url(img_3/img0285.png)',284],
+                ['url(img_3/img0286.png)',285],
+                ['url(img_3/img0287.png)',286],
+                ['url(img_3/img0288.png)',287]
                 ]
         var div_amount = 60
+        var lastamount = 0
     var density = 9.5
     create_div()
     function create_div(){
@@ -424,16 +432,15 @@ $(document).ready(function(){
             }
         }
     }
+    var first = true
+    var last = false
     function place() {
         $('.elem').each(function(index){
-            $(window).scrollTop(h/back_img.length)
             var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]*density
 
             var pos_top = index*(h/$('.elem').length)
             $(this).css({'top' : pos_top + 'px'})
             $(this).css({'height' : (h/$('.elem').length) + 'px'})
-            console.log(index*0.2)
-            console.log(index*0.2)
             // $(this).css({'transition-delay' : index*0.005 + 's'})
             $(this).css({'background-position' : get_back_pos(speedforsec, pos_top)})
             // console.log(get_back_pos(speedforsec, pos_top))
@@ -444,8 +451,20 @@ $(document).ready(function(){
             $(this).css({'background-image' : back_img_name.join() })
         })
         setTimeout(function(){
-            animate()
+            smooth_animate()
         },100)
+    }
+        var smooth_animate_counter  = 0
+    function smooth_animate(){
+        smooth_animate_counter =  smooth_animate_counter+1
+        $('html, body').animate({
+           scrollTop: smooth_animate_counter
+        },0);
+        if(first){
+            setTimeout(function(){
+                smooth_animate()
+            },1)
+        }
     }
     function get_back_pos(speedforsec,pos_top){
         var array = []
@@ -457,71 +476,42 @@ $(document).ready(function(){
             }
         }
     }
-    $(window).scroll(function (event) {
-        var scroll = $(window).scrollTop();
-        syncscroll(scroll)
-    });
 
-
+var stop = false
+var preposx = 0
+var movedamount
+var animate_counter_new = 0
+var audioframe = 0
+            $(window).scroll(function (event) {
+                $('.wrapper').animate({
+                   scrollLeft: $(window).scrollTop()
+                },0);
+            })
+            $('.wrapper').scroll(function (event) {
+                if(!stop && !first && !last){
+                console.log('1')
+                    animate_counter_new = Math.round($('.wrapper').scrollLeft() / (0.1 * w))
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density)
+                }else if(stop){
+                console.log('2')
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density +movedamount) 
+                }else if(last){
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density +lastamount) 
+                }else{
+                console.log('3')
+                    syncscroll($('.wrapper').scrollLeft())
+                }
+            })
 
     var animate_counter = 0
     function animate(){
         $('.elem').addClass('animate')
         animate_counter++
-        // if(animate_counter == 148){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 150){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 152){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 154){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 156){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 158){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 160){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 162){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 164){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 166){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 168){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 170){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 172){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 174){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 176){
-        //     animate_counter++
-        // }
-        // if(animate_counter == 178){
-        //     animate_counter++
-        // }
-        console.log(animate_counter)
         if(animate_counter > 76 && animate_counter <97){
             $('.elem').css({'background-color':'#9090903d'})
             $('.elem>div').css({'background':'linear-gradient(rgb(144 144 144), rgb(255 255 255 / 0%), rgb(255 255 255 / 0%), rgb(111 111 111))'})
             $('body').css({'background-image':'url(bg.png)'})
-        }else if(animate_counter > 148 && animate_counter <162){
+        }else if(animate_counter > 126 && animate_counter <162){
             $('.elem').css({'background-color':'#9090903d'})
             // $('.elem>div').css({'background':'linear-gradient(rgb(26 0 167), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgb(26 0 167))'})
             $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
@@ -531,33 +521,233 @@ $(document).ready(function(){
             $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
             $('.back').show()
         }else{
-        console.log('--------------------')
             $('.elem').css({'background-color':'#eeeeee'})
             $('.elem>div').css({'background':'linear-gradient(#ffffff, #1b1b1b, #ffffff)'})
             $('.back').hide()
         }
-        if(animate_counter < back_img.length){
-                syncscroll(w/back_img.length*back_img[animate_counter][1]*density)
+        if(animate_counter < back_img.length && date < 181472){
+                if(!stop){
+                    $('html, body').animate({
+                       scrollTop: animate_counter * 0.1 * w
+                    },0);
+                }
                 scroll_ani = setTimeout(function(){
                     animate()
-                },250)
+                    console.log('slkdjf;lakjdsfl;k')
+                },170)
         }else{
             $('.elem').removeClass('animate')
+            if(date > 181470){
+                last = true
+                lastamount = 0
+                lastanimate_counter = 0
+                lastanimate()
+            }
         }
-
     }
+    var lastanimate_counter = 0
+    function lastanimate(){
+        lastanimate_counter ++
+        console.log(lastanimate_counter)
+        lastamount++
+        if(lastanimate_counter<100){
+                    setTimeout(function(){lastanimate()},lastanimate_counter)
+                            $('html, body').animate({
+                               scrollTop: animate_counter * 0.1 * w +lastamount
+                            },0);
+                        }else{location.reload();}
+    }
+    var audio = document.getElementsByTagName('audio')[0]
     function syncscroll(scroll){
         $('.elem').each(function(){
             var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]
-            // console.log(-1*speedforsec*scroll)
             $(this).css({'margin-left':-1*speedforsec*scroll})
         })
     }
+
+            document.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                var posx = e.originalEvent.touches[0].x
+                var posy = e.originalEvent.touches[0].y - $('#poster').offset().top
+                motion('down', posx, posy)
+            });
+            document.addEventListener('touchmove', function (e) {
+                var posx = e.originalEvent.touches[0].x
+                var posy = e.originalEvent.touches[0].y
+                motion('move', posx, posy)
+            });
+            document.addEventListener('touchend', function (e) {
+                motion('up', 0, 0)
+            });
+            document.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                var posx = e.pageX
+                var posy = e.pageY
+                motion('down', posx, posy)
+            });
+            document.addEventListener('mousemove', function (e) {
+                var posx = e.pageX
+                var posy = e.pageY
+                motion('move', posx, posy)
+            });
+            document.addEventListener('mouseup', function (e) {
+                motion('up', 0, 0)
+            });
+            var date
+            var org_date
+            var ani_step = 0
+            function motion(res, posx, posy) {
+                if (res == 'down' && !first) { 
+                    $('.elem').removeClass('animate') 
+                    preposx = posx
+                    console.log(posy-$(window).scrollTop())
+                    console.log($(window).outerHeight())
+                    if( $(window).outerHeight() <= posy-$(window).scrollTop() ){
+                        console.log('heu')
+                    }
+                    stop = true
+                }
+                if (res == 'down' && first) { 
+                    $('audio').get(0).play();
+                    org_date = new Date().getTime()
+                    getaudioduration()
+                    first = false
+                    animate()
+                }
+                if (res == 'move' && stop) {
+                    var scrolltop = $(window).scrollTop()
+                    movedamount = preposx - posx
+                    console.log(movedamount)
+                        $('html, body').animate({
+                           scrollTop: scrolltop + (preposx - posx)/10 
+                        },0);
+                        // preposx = posx
+                }
+                if (res == 'up' || res == "out") { 
+                    $('.elem').addClass('animate') 
+                    preposx = posx
+                    stop = false
+                    console.log('hey')
+                }
+            }   
+
+            function getaudioduration(){
+                audioframe ++ 
+                date = new Date().getTime() - org_date + 180000
+                // console.log(date)
+                // console.log(audioframe)
+                if(date > 4685 && ani_step == 0){
+                    ani_step = 1
+                    animate_counter = 4
+                }
+                if(date > 9353 && ani_step == 1){
+                    ani_step = 2
+                    animate_counter = 4
+                }
+                if(date > 13400 && ani_step == 2){
+                    ani_step = 3
+                    animate_counter = 4
+                }
+                if(date > 22000 && ani_step == 3){
+                    ani_step = 4
+                    animate_counter = 26
+                }
+                if(date > 22085 && ani_step == 4){
+                    ani_step = 5
+                    animate_counter = 26
+                }
+                if(date > 30336 && ani_step == 5){
+                    ani_step = 6
+                    animate_counter = 26
+                }
+                if(date > 39000 && ani_step == 6){
+                    ani_step = 7
+                    animate_counter = 41
+                }
+                if(date > 43510 && ani_step == 7){
+                    ani_step = 8
+                    animate_counter = 41
+                }
+                if(date > 47730 && ani_step == 8){
+                    ani_step = 9
+                    animate_counter = 41
+                }
+                if(date > 60690 && ani_step == 9){
+                    ani_step = 10
+                    animate_counter = 68
+                }
+                if(date > 78133 && ani_step == 10){
+                    ani_step = 11
+                    animate_counter = 81
+                }
+                if(date > 103902 && ani_step == 11){
+                    ani_step = 12
+                    animate_counter = 26
+                }
+                if(date > 115000 && ani_step == 12){
+                    $('body').css({'background-image':'none'})
+                    // $('.elem').css({'opacity':0.9})
+                }
+                if(date > 118800 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.8})
+                }
+                if(date > 119000 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.7})
+                }
+                if(date > 119200 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.6})
+                }
+                if(date > 119400 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.5})
+                }
+                if(date > 119600 && ani_step == 12){
+                    $('.elem').css({'opacity':0.8})
+                }
+                if(date > 119800 && ani_step == 12){
+                    $('.elem').css({'opacity':0.6})
+                }
+                if(date > 120000 && ani_step == 12){
+                    $('.elem').css({'opacity':0.4})
+                }
+                if(date > 120200 && ani_step == 12){
+                    $('.elem').css({'opacity':0.2})
+                    ani_step = 13
+                    animate_counter = 240
+                }
+                if(date > 120400 && ani_step == 13){
+                    $('.elem').css({'opacity':1})
+                }
+                    // console.log(animate_counter)
+                if(animate_counter > back_img.length-2 && ani_step == 13){
+                    animate_counter = 240
+                }
+                if(date > 146795 && ani_step == 13){
+                    ani_step = 14
+                    animate_counter = 181
+                }
+                if(date > 154780 && ani_step == 14){
+                    ani_step = 15
+                    animate_counter = 68
+                }
+                if(date > 163658 && ani_step == 15){
+                    ani_step = 16
+                    animate_counter = 38
+                }
+                if(date > 178000 && ani_step == 16){
+                    ani_step = 17
+                    animate_counter = 4
+                }
+                globalID = requestAnimationFrame(getaudioduration);
+            }
 
 })
 </script>
 </head>
 <body>
-	<div class="scroll"></div>
+    <audio src="thanksforvisiting.mp3"></audio>
+       <div class="scrollY"></div>
+    <div class="wrapper">
+	   <div class="scrollX">&nbsp;</div>
+    </div>
     <div class="back"></div>
 </body>
