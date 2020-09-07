@@ -151,6 +151,11 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
 $(document).ready(function(){
     var h = window.innerHeight
     var w = window.innerWidth
+    if(isMobile&&w>h){
+        alert('please rotate your device')}
+        $( window ).resize(function() {
+        location.reload();
+});
     console.log('====================================================================================')
     console.log(h)
     console.log($(window).height())
@@ -1208,7 +1213,7 @@ function scrolling(amount){
 </script>
 </head>
 <body>
-    <img src="logo.png" class="logo">
+    <a href="http://idiotape.com/" target="_blank"><img src="logo.png" class="logo"></a>
     <div class="popup">&nbsp;</div>
     <div class="loading">&nbsp;</div>
     <audio src="thanksforvisiting.mp3"></audio>
