@@ -72,6 +72,7 @@ crossorigin="anonymous"></script>
         position: fixed;
         background-blend-mode: darken;
         z-index: 10;
+        pointer-events: none;
     }
     .popup,.loading{
         width: 10vw;
@@ -84,23 +85,26 @@ crossorigin="anonymous"></script>
         top: 45vh;
         transform: translate(-50%, -50%);
         transition: 0.3s;
+    }
+        .popup{
+            display: none;
+        }
+    .loading{
+    z-index: 1000000000000 !important;
+        background-image: url('loading.png') !important;
           animation: blink-animation 1s steps(5, start) infinite;
           -webkit-animation: blink-animation 1s steps(5, start) infinite;
         }
         @keyframes blink-animation {
           to {
-            visibility: hidden;
+            opacity:0;
           }
         }
         @-webkit-keyframes blink-animation {
           to {
-            visibility: hidden;
+            opacity:0;
           }
         }
-    .loading{
-    z-index: 1000000000000 !important;
-        background-image: url('loading.png') !important;
-    }
     .elem>div{
     position: absolute;
     width: 100%;
@@ -147,10 +151,15 @@ crossorigin="anonymous"></script>
     }
     .logo{
         position: fixed;
-        left: 0;
-        top: 0;
-        height: 1.5vh;
+        left: 5px;
+        top: 5px;
+        overflow: hidden;
+        pointer-events: all;
         z-index: 1000000000000000
+    }
+    .logo img{
+        height: 1.5vh;
+
     }
     audio { display:none;}
     body{overflow-x: hidden;}
@@ -189,9 +198,9 @@ $(document).ready(function(){
     var w = window.innerWidth
     if(isMobile&&w>h){
         alert('please rotate your device')}
-        $( window ).resize(function() {
+    $( window ).resize(function() {
         location.reload();
-});
+    });
     console.log('====================================================================================')
     console.log(h)
     console.log($(window).height())
@@ -866,10 +875,12 @@ $(document).ready(function(){
     }
     var first = true
     var last = false
-    var place_ready = false
+    var window_ready = false
     jQuery(window).load(function () {
             smooth_animate()
+            window_ready = true
             $('.loading').hide()
+            $('.popup').show()
             $('body').css({'pointer-event':'auto'})
     })
     function place() {
@@ -1059,51 +1070,53 @@ function scrolling(amount){
             var barclick = false
             var init_scrolltop
             function motion(res, posx, posy) {
-                if (res == 'down' && !first) { 
-                    $('.elem').removeClass('animate') 
-                    preposx = posx
-                    scrollbarcounter = 0
-                    stop = true
-                    init_scrolltop = scrolltop
-                    if(posy > 0.95*h || isMobile){
-                        console.log('------')
-                        navigate()
+                if(window_ready){
+                    if (res == 'down' && !first) { 
+                        $('.elem').removeClass('animate') 
+                        preposx = posx
+                        scrollbarcounter = 0
+                        stop = true
+                        init_scrolltop = scrolltop
+                        if(posy > 0.95*h || isMobile){
+                            console.log('------')
+                            navigate()
+                        }
                     }
-                }
-                if (res == 'down' && first) { 
-                    $('audio').get(0).play();
-                    $('.popup').hide()
-                    $('body').css({'filter':'none'})
-                    org_date = new Date().getTime()
-                    getaudioduration()
-                    first = false
-                    animate()
-                }
-                if (res == 'move' && stop) {
-                        console.log('**********************')
-                        console.log(0.95*h)
-                        console.log(posy)
-                    $('.elem').removeClass('animate')
-                    movedamount = preposx - posx
-                    if(posy < 0.95*h){
-                        console.log('nobarclick')
-                        console.log(parseInt(scrolltop))
-                        var sc_p =  scrolltop + (preposx - posx)/10
-                        var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
-                        scrolling(scrolltop + (preposx - posx)/10)
-                            $('.bar').css({'margin-left':sc_p_b+'px'})
-                    }else if(barclick){
-                        console.log('---------------------------barclick')
-                        console.log('barclick')
-                            $('.bar').css({'marginLeft':g_posx+'px'}) 
+                    if (res == 'down' && first) { 
+                        $('audio').get(0).play();
+                        $('.popup').hide()
+                        $('body').css({'filter':'none'})
+                        org_date = new Date().getTime()
+                        getaudioduration()
+                        first = false
+                        animate()
                     }
-                }
-                if (res == 'up' || res == "out") { 
-                    $('.elem').addClass('animate') 
-                    preposx = posx
-                    barclick = false
-                    stop = false
-                    console.log('--------------------------------------')
+                    if (res == 'move' && stop) {
+                            console.log('**********************')
+                            console.log(0.95*h)
+                            console.log(posy)
+                        $('.elem').removeClass('animate')
+                        movedamount = preposx - posx
+                        if(posy < 0.95*h){
+                            console.log('nobarclick')
+                            console.log(parseInt(scrolltop))
+                            var sc_p =  scrolltop + (preposx - posx)/10
+                            var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                            scrolling(scrolltop + (preposx - posx)/10)
+                                $('.bar').css({'margin-left':sc_p_b+'px'})
+                        }else if(barclick){
+                            console.log('---------------------------barclick')
+                            console.log('barclick')
+                                $('.bar').css({'marginLeft':g_posx+'px'}) 
+                        }
+                    }
+                    if (res == 'up' || res == "out") { 
+                        $('.elem').addClass('animate') 
+                        preposx = posx
+                        barclick = false
+                        stop = false
+                        console.log('--------------------------------------')
+                    }
                 }
             }   
             function navigate(){
@@ -1249,7 +1262,7 @@ function scrolling(amount){
 </script>
 </head>
 <body>
-    <a href="http://idiotape.com/" target="_blank"><img src="logo.png" class="logo"></a>
+    <a href="http://idiotape.com/" target="_blank" class="logo"><img src="logo.png"></a>
     <div class="popup">&nbsp;</div>
     <div class="loading">&nbsp;</div>
     <audio src="thanksforvisiting.mp3"></audio>
