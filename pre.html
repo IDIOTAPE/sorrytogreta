@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta 
+     name='viewport' 
+     content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' 
+/>
+<script
+src="https://code.jquery.com/jquery-3.4.1.js"
+integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+crossorigin="anonymous"></script>
+<style>
+    html,body{
+        height: 100%;
+    }
+    *{	margin:0;
+    	padding:0;}
+        body{transform: rotate(); filter: invert(1);}
+        .bar_wrapper{
+            position: fixed;
+            bottom: 0;
+            height: 5vh;
+            width: 100vw;
+            left: 0;
+            z-index:1000000;
+            background-image: url('bar.png');
+            background-size: contain;
+            border-radius: 0.2vw
+        }
+        .bar{
+            width: 1vw;
+            background:linear-gradient(red, #ff6565, #ff0c0c 70%);
+            height: 90%;
+            transform: translateY(6%);
+            border-radius: 0.2vw
+        }
+    .elem{
+    	width: 50000vw;
+    	height: 5vh;
+    	background-color: #eeeeee;
+        background-size: auto 100vh;
+        background-repeat: no-repeat;
+        position: fixed;
+        background-blend-mode: darken;
+        z-index: 10;
+    }
+    .popup{
+        width: 10vw;
+        height: 10vw;
+        position: fixed;
+        z-index: 100000000000;
+        background-image: url('button.png');
+        background-size: 100% 100%;
+        left: 50%;
+        top: 45vh;
+        transform: translate(-50% -50%);
+    }
+    .elem>div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#ffffff,#1b1b1b,#ffffff);
+    mix-blend-mode: color-burn;
+    }
+    .elem>div>div{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    }
+    .animate{
+        transition: margin-left 0.125s ease-in-out
+    }
+    .scrollX{
+        position: relative;
+        width: 3500vw;
+        height: 100%
+    }
+    .scrollY{
+        height: 3300vw;
+        width: 10%
+
+    }
+    .back{
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    left: 0;
+    top: 0;
+     /*background: blue;*/
+    display: none;
+    }
+    .wrapper{
+        width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: scroll;
+    z-index: 100000;
+    }
+    audio { display:none;}
+    body{overflow-x: hidden;}
+@media screen and (min-aspect-ratio: 1) {
+    .popup{
+    width: 30vw;
+    height: 30vw;
+    position: fixed;
+    z-index: 100000000000;
+    background-image: url('button.png');
+    background-size: 100% 100%;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    }
+    .bar{
+        width: 5vw
+    }
+    .bar_wrapper{
+        background-size: cover;
+    }
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.js"></script>
+<script type="text/javascript">
+// var scrollspeed = 0.7
+var isMobile = false; //initiate as false
+// device detection
+if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
+    || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) { 
+    isMobile = true;
+}
+$(document).ready(function(){
+    var h = window.innerHeight
+    var w = window.innerWidth
+    console.log('====================================================================================')
+    console.log(h)
+    console.log($(window).height())
+    if(h>w){
+        h = $('.back').outerHeight()
+        console.log(h)
+    }
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+    if(!isMobile){
+        back_img = [
+                    ['url(img_3/img0011.png)',1],
+                    ['url(img_3/img0011.png)',2],
+                    ['url(img_3/img0011.png)',3],
+                    ['url(img_3/img0011.png)',4],
+                    ['url(img_3/img0011.png)',5],
+                    ['url(img_3/img0011.png)',6],
+                    ['url(img_3/img0011.png)',7],
+                    ['url(img_3/img0011.png)',8],
+                    ['url(img_3/img0009.png)',9],
+                    ['url(img_3/img0010.png)',10],
+                    ['url(img_3/img0011.png)',11],
+                    ['url(img_3/img0012.png)',12],
+                    ['url(img_3/img0013.png)',13],
+                    ['url(img_3/img0014.png)',14],
+                    ['url(img_3/img0015.png)',15],
+                    ['url(img_3/img0191.png)',191],
+                    ['url(img_3/img0016.png)',16],
+                    ['url(img_3/img0192.png)',192],
+                    ['url(img_3/img0017.png)',17],
+                    ['url(img_3/img0193.png)',193],
+                    ['url(img_3/img0018.png)',18],
+                    ['url(img_3/img0194.png)',194],
+                    ['url(img_3/img0019.png)',19],
+                    ['url(img_3/img0195.png)',195],
+                    ['url(img_3/img0020.png)',20],
+                    ['url(img_3/img0021.png)',21],
+                    ['url(img_3/img0022.png)',22],
+                    ['url(img_3/img0023.png)',23],
+                    ['url(img_3/img0024.png)',24],
+                    ['url(img_3/img0025.png)',25],
+                    ['url(img_3/img0026.png)',26],
+                    ['url(img_3/img0027.png)',27],
+                    ['url(img_3/img0028.png)',28],
+                    ['url(img_3/img0029.png)',29],
+                    ['url(img_3/img0030.png)',30],
+                    ['url(img_3/img0031.png)',31],
+                    ['url(img_3/img0032.png)',32],
+                    ['url(img_3/img0033.png)',33],
+                    ['url(img_3/img0034.png)',34],
+                    ['url(img_3/img0196.png)',196],
+                    ['url(img_3/img0197.png)',197],
+                    ['url(img_3/img0198.png)',198],
+                    ['url(img_3/img0199.png)',199],
+                    ['url(img_3/img0200.png)',200],
+                    ['url(img_3/img0035.png)',35],
+                    ['url(img_3/img0036.png)',36],
+                    ['url(img_3/img0037.png)',37],
+                    ['url(img_3/img0038.png)',38],
+                    ['url(img_3/img0039.png)',39],
+                    ['url(img_3/img0040.png)',40],
+                    ['url(img_3/img0041.png)',41],
+                    ['url(img_3/img0042.png)',42],
+                    ['url(img_3/img0043.png)',43],
+                    ['url(img_3/img0044.png)',44],
+                    ['url(img_3/img0045.png)',45],
+                    ['url(img_3/img0046.png)',46],
+                    ['url(img_3/img0047.png)',47],
+                    ['url(img_3/img0048.png)',48],
+                    ['url(img_3/img0049.png)',49],
+                    ['url(img_3/img0050.png)',50],
+                    ['url(img_3/img0051.png)',51],
+                    ['url(img_3/img0052.png)',52],
+                    ['url(img_3/img0053.png)',53],
+                    ['url(img_3/img0054.png)',54],
+                    ['url(img_3/img0055.png)',55],
+                    ['url(img_3/img0056.png)',56],
+                    ['url(img_3/img0057.png)',57],
+                    ['url(img_3/img0058.png)',58],
+                    ['url(img_3/img0059.png)',59],
+                    ['url(img_3/img0060.png)',60],
+                    ['url(img_3/img0061.png)',61],
+                    ['url(img_3/img0062.png)',62],
+                    ['url(img_3/img0063.png)',63],
+                    ['url(img_3/img0064.png)',64],
+                    ['url(img_3/img0065.png)',65],
+                    ['url(img_3/img0066.png)',66],
+                    ['url(img_3/img0067.png)',67],
+                    ['url(img_3/img0068.png)',68],
+                    ['url(img_3/img0069.png)',69],
+                    ['url(img_3/img0070.png)',70],
+                    ['url(img_3/img0071.png)',71],
+                    ['url(img_3/img0072.png)',72],
+                    ['url(img_3/img0073.png)',73],
+                    ['url(img_3/img0074.png)',74],
+                    ['url(img_3/img0075.png)',75],
+                    ['url(img_3/img0076.png)',76],
+                    ['url(img_3/img0077.png)',77],
+                    ['url(img_3/img0078.png)',78],
+                    ['url(img_3/img0079.png)',79],
+                    ['url(img_3/img0080.png)',80],
+                    ['url(img_3/img0081.png)',81],
+                    ['url(img_3/img0082.png)',82],
+                    ['url(img_3/img0083.png)',83],
+                    ['url(img_3/img0084.png)',84],
+                    ['url(img_3/img0085.png)',85],
+                    ['url(img_3/img0086.png)',86],
+                    ['url(img_3/img0087.png)',87],
+                    ['url(img_3/img0088.png)',88],
+                    ['url(img_3/img0089.png)',89],
+                    ['url(img_3/img0090.png)',90],
+                    ['url(img_3/img0091.png)',91],
+                    ['url(img_3/img0092.png)',92],
+                    ['url(img_3/img0093.png)',93],
+                    ['url(img_3/img0094.png)',94],
+                    ['url(img_3/img0095.png)',95],
+                    ['url(img_3/img0096.png)',96],
+                    ['url(img_3/img0097.png)',97],
+                    ['url(img_3/img0098.png)',98],
+                    ['url(img_3/img0099.png)',99],
+                    ['url(img_3/img0100.png)',100],
+                    ['url(img_3/img0101.png)',101],
+                    ['url(img_3/img0102.png)',102],
+                    ['url(img_3/img0103.png)',103],
+                    ['url(img_3/img0104.png)',104],
+                    ['url(img_3/img0105.png)',105],
+                    ['url(img_3/img0106.png)',106],
+                    ['url(img_3/img0107.png)',107],
+                    ['url(img_3/img0108.png)',108],
+                    ['url(img_3/img0109.png)',109],
+                    ['url(img_3/img0110.png)',110],
+                    ['url(img_3/img0111.png)',111],
+                    ['url(img_3/img0112.png)',112],
+                    ['url(img_3/img0113.png)',113],
+                    ['url(img_3/img0114.png)',114],
+                    ['url(img_3/img0115.png)',115],
+                    ['url(img_3/img0116.png)',116],
+                    ['url(img_3/img0117.png)',117],
+                    ['url(img_3/img0118.png)',118],
+                    ['url(img_3/img0119.png)',119],
+                    ['url(img_3/img0120.png)',120],
+                    ['url(img_3/img0121.png)',121],
+                    ['url(img_3/img0122.png)',122],
+                    ['url(img_3/img0123.png)',123],
+                    ['url(img_3/img0124.png)',124],
+                    ['url(img_3/img0125.png)',125],
+                    ['url(img_3/img0126.png)',126],
+                    ['url(img_3/img0127.png)',127],
+                    ['url(img_3/img0128.png)',128],
+                    ['url(img_3/img0129.png)',129],
+                    ['url(img_3/img0130.png)',130],
+                    ['url(img_3/img0131.png)',131],
+                    ['url(img_3/img0132.png)',132],
+                    ['url(img_3/img0133.png)',133],
+                    ['url(img_3/img0134.png)',134],
+                    ['url(img_3/img0135.png)',135],
+                    ['url(img_3/img0136.png)',136],
+                    ['url(img_3/img0137.png)',137],
+                    ['url(img_3/img0138.png)',138],
+                    ['url(img_3/img0139.png)',139],
+                    ['url(img_3/img0140.png)',140],
+                    ['url(img_3/img0141.png)',141],
+                    ['url(img_3/img0142.png)',142],
+                    ['url(img_3/img0143.png)',143],
+                    ['url(img_3/img0144.png)',144],
+                    ['url(img_3/img0145.png)',145],
+                    ['url(img_3/img0146.png)',146],
+                    ['url(img_3/img0147.png)',147],
+                    ['url(img_3/img0148.png)',148],
+                    ['url(img_3/img0149.png)',149],
+                    ['url(img_3/img0150.png)',150],
+                    ['url(img_3/img0151.png)',151],
+                    ['url(img_3/img0152.png)',152],
+                    ['url(img_3/img0153.png)',153],
+                    ['url(img_3/img0154.png)',154],
+                    ['url(img_3/img0155.png)',155],
+                    ['url(img_3/img0156.png)',156],
+                    ['url(img_3/img0157.png)',157],
+                    ['url(img_3/img0158.png)',158],
+                    ['url(img_3/img0159.png)',159],
+                    ['url(img_3/img0160.png)',160],
+                    ['url(img_3/img0161.png)',161],
+                    ['url(img_3/img0162.png)',162],
+                    ['url(img_3/img0163.png)',163],
+                    ['url(img_3/img0164.png)',164],
+                    ['url(img_3/img0165.png)',165],
+                    ['url(img_3/img0166.png)',166],
+                    ['url(img_3/img0167.png)',167],
+                    ['url(img_3/img0168.png)',168],
+                    ['url(img_3/img0169.png)',169],
+                    ['url(img_3/img0170.png)',170],
+                    ['url(img_3/img0171.png)',171],
+                    ['url(img_3/img0172.png)',172],
+                    ['url(img_3/img0173.png)',173],
+                    ['url(img_3/img0174.png)',174],
+                    ['url(img_3/img0175.png)',175],
+                    ['url(img_3/img0176.png)',176],
+                    ['url(img_3/img0177.png)',177],
+                    ['url(img_3/img0178.png)',178],
+                    ['url(img_3/img0179.png)',179],
+                    ['url(img_3/img0180.png)',180],
+                    ['url(img_3/img0181.png)',181],
+                    ['url(img_3/img0182.png)',182],
+                    ['url(img_3/img0183.png)',183],
+                    ['url(img_3/img0184.png)',184],
+                    ['url(img_3/img0185.png)',185],
+                    ['url(img_3/img0186.png)',186],
+                    ['url(img_3/img0187.png)',187],
+                    ['url(img_3/img0188.png)',188],
+                    ['url(img_3/img0189.png)',189],
+                    ['url(img_3/img0190.png)',190],
+                    ['url(img_3/img0191.png)',191],
+                    ['url(img_3/img0192.png)',192],
+                    ['url(img_3/img0193.png)',193],
+                    ['url(img_3/img0194.png)',194],
+                    ['url(img_3/img0195.png)',195],
+                    ['url(img_3/img0196.png)',196],
+                    ['url(img_3/img0197.png)',197],
+                    ['url(img_3/img0198.png)',198],
+                    ['url(img_3/img0199.png)',199],
+                    ['url(img_3/img0200.png)',200],
+                    ['url(img_3/img0201.png)',201],
+                    ['url(img_3/img0202.png)',202],
+                    ['url(img_3/img0203.png)',203],
+                    ['url(img_3/img0204.png)',204],
+                    ['url(img_3/img0205.png)',205],
+                    ['url(img_3/img0206.png)',206],
+                    ['url(img_3/img0207.png)',207],
+                    ['url(img_3/img0208.png)',208],
+                    ['url(img_3/img0209.png)',209],
+                    ['url(img_3/img0210.png)',210],
+                    ['url(img_3/img0211.png)',211],
+                    ['url(img_3/img0212.png)',212],
+                    ['url(img_3/img0213.png)',213],
+                    ['url(img_3/img0214.png)',214],
+                    ['url(img_3/img0215.png)',215],
+                    ['url(img_3/img0216.png)',216],
+                    ['url(img_3/img0217.png)',217],
+                    ['url(img_3/img0218.png)',218],
+                    ['url(img_3/img0219.png)',219],
+                    ['url(img_3/img0220.png)',220],
+                    ['url(img_3/img0221.png)',221],
+                    ['url(img_3/img0222.png)',222],
+                    ['url(img_3/img0223.png)',223],
+                    ['url(img_3/img0224.png)',224],
+                    ['url(img_3/img0225.png)',225],
+                    ['url(img_3/img0226.png)',226],
+                    ['url(img_3/img0227.png)',227],
+                    ['url(img_3/img0228.png)',228],
+                    ['url(img_3/img0229.png)',229],
+                    ['url(img_3/img0230.png)',230],
+                    ['url(img_3/img0231.png)',231],
+                    ['url(img_3/img0232.png)',232],
+                    ['url(img_3/img0233.png)',233],
+                    ['url(img_3/img0234.png)',234],
+                    ['url(img_3/img0235.png)',235],
+                    ['url(img_3/img0236.png)',236],
+                    ['url(img_3/img0237.png)',237],
+                    ['url(img_3/img0238.png)',238],
+                    ['url(img_3/img0239.png)',239],
+                    ['url(img_3/img0240.png)',240],
+                    ['url(img_3/img0241.png)',241],
+                    ['url(img_3/img0242.png)',242],
+                    ['url(img_3/img0243.png)',243],
+                    ['url(img_3/img0244.png)',244],
+                    ['url(img_3/img0245.png)',245],
+                    ['url(img_3/img0246.png)',246],
+                    ['url(img_3/img0247.png)',247],
+                    ['url(img_3/img0248.png)',248],
+                    ['url(img_3/img0249.png)',249],
+                    ['url(img_3/img0250.png)',250],
+                    ['url(img_3/img0251.png)',251],
+                    ['url(img_3/img0252.png)',252],
+                    ['url(img_3/img0253.png)',253],
+                    ['url(img_3/img0254.png)',254],
+                    ['url(img_3/img0255.png)',255],
+                    ['url(img_3/img0256.png)',256],
+                    ['url(img_3/img0257.png)',257],
+                    ['url(img_3/img0258.png)',258],
+                    ['url(img_3/img0259.png)',259],
+                    ['url(img_3/img0260.png)',260],
+                    ['url(img_3/img0261.png)',261],
+                    ['url(img_3/img0262.png)',262],
+                    ['url(img_3/img0263.png)',263],
+                    ['url(img_3/img0264.png)',264],
+                    ['url(img_3/img0265.png)',265],
+                    ['url(img_3/img0266.png)',266],
+                    ['url(img_3/img0267.png)',267],
+                    ['url(img_3/img0268.png)',268],
+                    ['url(img_3/img0269.png)',269],
+                    ['url(img_3/img0270.png)',270],
+                    ['url(img_3/img0271.png)',271],
+                    ['url(img_3/img0272.png)',272],
+                    ['url(img_3/img0273.png)',273],
+                    ['url(img_3/img0274.png)',274],
+                    ['url(img_3/img0275.png)',275],
+                    ['url(img_3/img0276.png)',276],
+                    ['url(img_3/img0277.png)',277],
+                    ['url(img_3/img0278.png)',278],
+                    ['url(img_3/img0279.png)',278],
+                    ['url(img_3/img0280.png)',279],
+                    ['url(img_3/img0281.png)',280],
+                    ['url(img_3/img0282.png)',281],
+                    ['url(img_3/img0283.png)',282],
+                    ['url(img_3/img0284.png)',283],
+                    ['url(img_3/img0285.png)',284],
+                    ['url(img_3/img0286.png)',285],
+                    ['url(img_3/img0287.png)',286],
+                    ['url(img_3/img0288.png)',287]
+                ]
+    }else{
+        back_img = [
+                    ['url(img_3_m/img0011.png)',1],
+                    ['url(img_3_m/img0011.png)',2],
+                    ['url(img_3_m/img0011.png)',3],
+                    ['url(img_3_m/img0011.png)',4],
+                    ['url(img_3_m/img0011.png)',5],
+                    ['url(img_3_m/img0011.png)',6],
+                    ['url(img_3_m/img0011.png)',7],
+                    ['url(img_3_m/img0011.png)',8],
+                    ['url(img_3_m/img0009.png)',9],
+                    ['url(img_3_m/img0010.png)',10],
+                    ['url(img_3_m/img0011.png)',11],
+                    ['url(img_3_m/img0012.png)',12],
+                    ['url(img_3_m/img0013.png)',13],
+                    ['url(img_3_m/img0014.png)',14],
+                    ['url(img_3_m/img0015.png)',15],
+                    ['url(img_3_m/img0191.png)',191],
+                    ['url(img_3_m/img0016.png)',16],
+                    ['url(img_3_m/img0192.png)',192],
+                    ['url(img_3_m/img0017.png)',17],
+                    ['url(img_3_m/img0193.png)',193],
+                    ['url(img_3_m/img0018.png)',18],
+                    ['url(img_3_m/img0194.png)',194],
+                    ['url(img_3_m/img0019.png)',19],
+                    ['url(img_3_m/img0195.png)',195],
+                    ['url(img_3_m/img0020.png)',20],
+                    ['url(img_3_m/img0021.png)',21],
+                    ['url(img_3_m/img0022.png)',22],
+                    ['url(img_3_m/img0023.png)',23],
+                    ['url(img_3_m/img0024.png)',24],
+                    ['url(img_3_m/img0025.png)',25],
+                    ['url(img_3_m/img0026.png)',26],
+                    ['url(img_3_m/img0027.png)',27],
+                    ['url(img_3_m/img0028.png)',28],
+                    ['url(img_3_m/img0029.png)',29],
+                    ['url(img_3_m/img0030.png)',30],
+                    ['url(img_3_m/img0031.png)',31],
+                    ['url(img_3_m/img0032.png)',32],
+                    ['url(img_3_m/img0033.png)',33],
+                    ['url(img_3_m/img0034.png)',34],
+                    ['url(img_3_m/img0196.png)',196],
+                    ['url(img_3_m/img0197.png)',197],
+                    ['url(img_3_m/img0198.png)',198],
+                    ['url(img_3_m/img0199.png)',199],
+                    ['url(img_3_m/img0200.png)',200],
+                    ['url(img_3_m/img0035.png)',35],
+                    ['url(img_3_m/img0036.png)',36],
+                    ['url(img_3_m/img0037.png)',37],
+                    ['url(img_3_m/img0038.png)',38],
+                    ['url(img_3_m/img0039.png)',39],
+                    ['url(img_3_m/img0040.png)',40],
+                    ['url(img_3_m/img0041.png)',41],
+                    ['url(img_3_m/img0042.png)',42],
+                    ['url(img_3_m/img0043.png)',43],
+                    ['url(img_3_m/img0044.png)',44],
+                    ['url(img_3_m/img0045.png)',45],
+                    ['url(img_3_m/img0046.png)',46],
+                    ['url(img_3_m/img0047.png)',47],
+                    ['url(img_3_m/img0048.png)',48],
+                    ['url(img_3_m/img0049.png)',49],
+                    ['url(img_3_m/img0050.png)',50],
+                    ['url(img_3_m/img0051.png)',51],
+                    ['url(img_3_m/img0052.png)',52],
+                    ['url(img_3_m/img0053.png)',53],
+                    ['url(img_3_m/img0054.png)',54],
+                    ['url(img_3_m/img0055.png)',55],
+                    ['url(img_3_m/img0056.png)',56],
+                    ['url(img_3_m/img0057.png)',57],
+                    ['url(img_3_m/img0058.png)',58],
+                    ['url(img_3_m/img0059.png)',59],
+                    ['url(img_3_m/img0060.png)',60],
+                    ['url(img_3_m/img0061.png)',61],
+                    ['url(img_3_m/img0062.png)',62],
+                    ['url(img_3_m/img0063.png)',63],
+                    ['url(img_3_m/img0064.png)',64],
+                    ['url(img_3_m/img0065.png)',65],
+                    ['url(img_3_m/img0066.png)',66],
+                    ['url(img_3_m/img0067.png)',67],
+                    ['url(img_3_m/img0068.png)',68],
+                    ['url(img_3_m/img0069.png)',69],
+                    ['url(img_3_m/img0070.png)',70],
+                    ['url(img_3_m/img0071.png)',71],
+                    ['url(img_3_m/img0072.png)',72],
+                    ['url(img_3_m/img0073.png)',73],
+                    ['url(img_3_m/img0074.png)',74],
+                    ['url(img_3_m/img0075.png)',75],
+                    ['url(img_3_m/img0076.png)',76],
+                    ['url(img_3_m/img0077.png)',77],
+                    ['url(img_3_m/img0078.png)',78],
+                    ['url(img_3_m/img0079.png)',79],
+                    ['url(img_3_m/img0080.png)',80],
+                    ['url(img_3_m/img0081.png)',81],
+                    ['url(img_3_m/img0082.png)',82],
+                    ['url(img_3_m/img0083.png)',83],
+                    ['url(img_3_m/img0084.png)',84],
+                    ['url(img_3_m/img0085.png)',85],
+                    ['url(img_3_m/img0086.png)',86],
+                    ['url(img_3_m/img0087.png)',87],
+                    ['url(img_3_m/img0088.png)',88],
+                    ['url(img_3_m/img0089.png)',89],
+                    ['url(img_3_m/img0090.png)',90],
+                    ['url(img_3_m/img0091.png)',91],
+                    ['url(img_3_m/img0092.png)',92],
+                    ['url(img_3_m/img0093.png)',93],
+                    ['url(img_3_m/img0094.png)',94],
+                    ['url(img_3_m/img0095.png)',95],
+                    ['url(img_3_m/img0096.png)',96],
+                    ['url(img_3_m/img0097.png)',97],
+                    ['url(img_3_m/img0098.png)',98],
+                    ['url(img_3_m/img0099.png)',99],
+                    ['url(img_3_m/img0100.png)',100],
+                    ['url(img_3_m/img0101.png)',101],
+                    ['url(img_3_m/img0102.png)',102],
+                    ['url(img_3_m/img0103.png)',103],
+                    ['url(img_3_m/img0104.png)',104],
+                    ['url(img_3_m/img0105.png)',105],
+                    ['url(img_3_m/img0106.png)',106],
+                    ['url(img_3_m/img0107.png)',107],
+                    ['url(img_3_m/img0108.png)',108],
+                    ['url(img_3_m/img0109.png)',109],
+                    ['url(img_3_m/img0110.png)',110],
+                    ['url(img_3_m/img0111.png)',111],
+                    ['url(img_3_m/img0112.png)',112],
+                    ['url(img_3_m/img0113.png)',113],
+                    ['url(img_3_m/img0114.png)',114],
+                    ['url(img_3_m/img0115.png)',115],
+                    ['url(img_3_m/img0116.png)',116],
+                    ['url(img_3_m/img0117.png)',117],
+                    ['url(img_3_m/img0118.png)',118],
+                    ['url(img_3_m/img0119.png)',119],
+                    ['url(img_3_m/img0120.png)',120],
+                    ['url(img_3_m/img0121.png)',121],
+                    ['url(img_3_m/img0122.png)',122],
+                    ['url(img_3_m/img0123.png)',123],
+                    ['url(img_3_m/img0124.png)',124],
+                    ['url(img_3_m/img0125.png)',125],
+                    ['url(img_3_m/img0126.png)',126],
+                    ['url(img_3_m/img0127.png)',127],
+                    ['url(img_3_m/img0128.png)',128],
+                    ['url(img_3_m/img0129.png)',129],
+                    ['url(img_3_m/img0130.png)',130],
+                    ['url(img_3_m/img0131.png)',131],
+                    ['url(img_3_m/img0132.png)',132],
+                    ['url(img_3_m/img0133.png)',133],
+                    ['url(img_3_m/img0134.png)',134],
+                    ['url(img_3_m/img0135.png)',135],
+                    ['url(img_3_m/img0136.png)',136],
+                    ['url(img_3_m/img0137.png)',137],
+                    ['url(img_3_m/img0138.png)',138],
+                    ['url(img_3_m/img0139.png)',139],
+                    ['url(img_3_m/img0140.png)',140],
+                    ['url(img_3_m/img0141.png)',141],
+                    ['url(img_3_m/img0142.png)',142],
+                    ['url(img_3_m/img0143.png)',143],
+                    ['url(img_3_m/img0144.png)',144],
+                    ['url(img_3_m/img0145.png)',145],
+                    ['url(img_3_m/img0146.png)',146],
+                    ['url(img_3_m/img0147.png)',147],
+                    ['url(img_3_m/img0148.png)',148],
+                    ['url(img_3_m/img0149.png)',149],
+                    ['url(img_3_m/img0150.png)',150],
+                    ['url(img_3_m/img0151.png)',151],
+                    ['url(img_3_m/img0152.png)',152],
+                    ['url(img_3_m/img0153.png)',153],
+                    ['url(img_3_m/img0154.png)',154],
+                    ['url(img_3_m/img0155.png)',155],
+                    ['url(img_3_m/img0156.png)',156],
+                    ['url(img_3_m/img0157.png)',157],
+                    ['url(img_3_m/img0158.png)',158],
+                    ['url(img_3_m/img0159.png)',159],
+                    ['url(img_3_m/img0160.png)',160],
+                    ['url(img_3_m/img0161.png)',161],
+                    ['url(img_3_m/img0162.png)',162],
+                    ['url(img_3_m/img0163.png)',163],
+                    ['url(img_3_m/img0164.png)',164],
+                    ['url(img_3_m/img0165.png)',165],
+                    ['url(img_3_m/img0166.png)',166],
+                    ['url(img_3_m/img0167.png)',167],
+                    ['url(img_3_m/img0168.png)',168],
+                    ['url(img_3_m/img0169.png)',169],
+                    ['url(img_3_m/img0170.png)',170],
+                    ['url(img_3_m/img0171.png)',171],
+                    ['url(img_3_m/img0172.png)',172],
+                    ['url(img_3_m/img0173.png)',173],
+                    ['url(img_3_m/img0174.png)',174],
+                    ['url(img_3_m/img0175.png)',175],
+                    ['url(img_3_m/img0176.png)',176],
+                    ['url(img_3_m/img0177.png)',177],
+                    ['url(img_3_m/img0178.png)',178],
+                    ['url(img_3_m/img0179.png)',179],
+                    ['url(img_3_m/img0180.png)',180],
+                    ['url(img_3_m/img0181.png)',181],
+                    ['url(img_3_m/img0182.png)',182],
+                    ['url(img_3_m/img0183.png)',183],
+                    ['url(img_3_m/img0184.png)',184],
+                    ['url(img_3_m/img0185.png)',185],
+                    ['url(img_3_m/img0186.png)',186],
+                    ['url(img_3_m/img0187.png)',187],
+                    ['url(img_3_m/img0188.png)',188],
+                    ['url(img_3_m/img0189.png)',189],
+                    ['url(img_3_m/img0190.png)',190],
+                    ['url(img_3_m/img0191.png)',191],
+                    ['url(img_3_m/img0192.png)',192],
+                    ['url(img_3_m/img0193.png)',193],
+                    ['url(img_3_m/img0194.png)',194],
+                    ['url(img_3_m/img0195.png)',195],
+                    ['url(img_3_m/img0196.png)',196],
+                    ['url(img_3_m/img0197.png)',197],
+                    ['url(img_3_m/img0198.png)',198],
+                    ['url(img_3_m/img0199.png)',199],
+                    ['url(img_3_m/img0200.png)',200],
+                    ['url(img_3_m/img0201.png)',201],
+                    ['url(img_3_m/img0202.png)',202],
+                    ['url(img_3_m/img0203.png)',203],
+                    ['url(img_3_m/img0204.png)',204],
+                    ['url(img_3_m/img0205.png)',205],
+                    ['url(img_3_m/img0206.png)',206],
+                    ['url(img_3_m/img0207.png)',207],
+                    ['url(img_3_m/img0208.png)',208],
+                    ['url(img_3_m/img0209.png)',209],
+                    ['url(img_3_m/img0210.png)',210],
+                    ['url(img_3_m/img0211.png)',211],
+                    ['url(img_3_m/img0212.png)',212],
+                    ['url(img_3_m/img0213.png)',213],
+                    ['url(img_3_m/img0214.png)',214],
+                    ['url(img_3_m/img0215.png)',215],
+                    ['url(img_3_m/img0216.png)',216],
+                    ['url(img_3_m/img0217.png)',217],
+                    ['url(img_3_m/img0218.png)',218],
+                    ['url(img_3_m/img0219.png)',219],
+                    ['url(img_3_m/img0220.png)',220],
+                    ['url(img_3_m/img0221.png)',221],
+                    ['url(img_3_m/img0222.png)',222],
+                    ['url(img_3_m/img0223.png)',223],
+                    ['url(img_3_m/img0224.png)',224],
+                    ['url(img_3_m/img0225.png)',225],
+                    ['url(img_3_m/img0226.png)',226],
+                    ['url(img_3_m/img0227.png)',227],
+                    ['url(img_3_m/img0228.png)',228],
+                    ['url(img_3_m/img0229.png)',229],
+                    ['url(img_3_m/img0230.png)',230],
+                    ['url(img_3_m/img0231.png)',231],
+                    ['url(img_3_m/img0232.png)',232],
+                    ['url(img_3_m/img0233.png)',233],
+                    ['url(img_3_m/img0234.png)',234],
+                    ['url(img_3_m/img0235.png)',235],
+                    ['url(img_3_m/img0236.png)',236],
+                    ['url(img_3_m/img0237.png)',237],
+                    ['url(img_3_m/img0238.png)',238],
+                    ['url(img_3_m/img0239.png)',239],
+                    ['url(img_3_m/img0240.png)',240],
+                    ['url(img_3_m/img0241.png)',241],
+                    ['url(img_3_m/img0242.png)',242],
+                    ['url(img_3_m/img0243.png)',243],
+                    ['url(img_3_m/img0244.png)',244],
+                    ['url(img_3_m/img0245.png)',245],
+                    ['url(img_3_m/img0246.png)',246],
+                    ['url(img_3_m/img0247.png)',247],
+                    ['url(img_3_m/img0248.png)',248],
+                    ['url(img_3_m/img0249.png)',249],
+                    ['url(img_3_m/img0250.png)',250],
+                    ['url(img_3_m/img0251.png)',251],
+                    ['url(img_3_m/img0252.png)',252],
+                    ['url(img_3_m/img0253.png)',253],
+                    ['url(img_3_m/img0254.png)',254],
+                    ['url(img_3_m/img0255.png)',255],
+                    ['url(img_3_m/img0256.png)',256],
+                    ['url(img_3_m/img0257.png)',257],
+                    ['url(img_3_m/img0258.png)',258],
+                    ['url(img_3_m/img0259.png)',259],
+                    ['url(img_3_m/img0260.png)',260],
+                    ['url(img_3_m/img0261.png)',261],
+                    ['url(img_3_m/img0262.png)',262],
+                    ['url(img_3_m/img0263.png)',263],
+                    ['url(img_3_m/img0264.png)',264],
+                    ['url(img_3_m/img0265.png)',265],
+                    ['url(img_3_m/img0266.png)',266],
+                    ['url(img_3_m/img0267.png)',267],
+                    ['url(img_3_m/img0268.png)',268],
+                    ['url(img_3_m/img0269.png)',269],
+                    ['url(img_3_m/img0270.png)',270],
+                    ['url(img_3_m/img0271.png)',271],
+                    ['url(img_3_m/img0272.png)',272],
+                    ['url(img_3_m/img0273.png)',273],
+                    ['url(img_3_m/img0274.png)',274],
+                    ['url(img_3_m/img0275.png)',275],
+                    ['url(img_3_m/img0276.png)',276],
+                    ['url(img_3_m/img0277.png)',277],
+                    ['url(img_3_m/img0278.png)',278],
+                    ['url(img_3_m/img0279.png)',278],
+                    ['url(img_3_m/img0280.png)',279],
+                    ['url(img_3_m/img0281.png)',280],
+                    ['url(img_3_m/img0282.png)',281],
+                    ['url(img_3_m/img0283.png)',282],
+                    ['url(img_3_m/img0284.png)',283],
+                    ['url(img_3_m/img0285.png)',284],
+                    ['url(img_3_m/img0286.png)',285],
+                    ['url(img_3_m/img0287.png)',286],
+                    ['url(img_3_m/img0288.png)',287]
+                ]
+    }
+    if(!isMobile){
+            var div_amount = 60
+            var lastamount = 0
+            var density = 9.5
+        }else{
+            var div_amount = 30
+            var lastamount = 0
+            var density = 30
+        }
+    var selected_array=[]
+    create_div()
+    function create_div(){
+        for (var i = back_img.length - 1; i >= 0; i--) {
+            back_img[i][1] = i
+        }
+        // console.log('hey')
+        var div_amount_array = []
+        for (var i = div_amount; i >= 1; i--) {
+            if(i<10){
+                        div_amount_array.push(10)}
+                        else{
+                        div_amount_array.push(Math.floor(i/3))
+                        }
+            div_amount_array = shuffle(div_amount_array)
+            if(i == 1){
+                for (var j = div_amount_array.length - 1; j >= 0; j--) {
+                    $('body').append('<div class="elem elem_'+div_amount_array[j]+'"><div></div></div>')
+                    if(j == 0){
+                        // mix()
+                        place()
+                    }
+                }
+            }
+        }
+    }
+    function mix(){
+        var num_array = []
+        for (var i = back_img.length - 1; i >= 0; i--) {
+            num_array.push(i+1)
+            num_array = shuffle(num_array)
+            if(i == 0){
+                for (var j = back_img.length - 1; j >= 0; j--) {
+                    back_img[j][1] = num_array[j]
+                    if(j==0){
+                        // console.log(back_img)
+                        place()
+                    }
+                }
+            }
+        }
+    }
+    var first = true
+    var last = false
+    function place() {
+        $('.elem').each(function(index){
+            var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]*density
+
+            var pos_top = index*(0.95*h/$('.elem').length)
+            $(this).css({'top' : pos_top + 'px'})
+            $(this).css({'height' : (0.95*h/$('.elem').length) + 'px'})
+            // $(this).css({'transition-delay' : index*0.005 + 's'})
+            $(this).css({'background-position' : get_back_pos(speedforsec, pos_top)})
+            // console.log(get_back_pos(speedforsec, pos_top))
+            var back_img_name = []
+            for (var i = 0; i < back_img.length; i++) {
+                back_img_name.push(back_img[i][0])
+            }
+            $(this).css({'background-image' : back_img_name.join() })
+        })
+        setTimeout(function(){
+            smooth_animate()
+        },100)
+    }
+        var smooth_animate_counter  = 0
+    function smooth_animate(){
+        smooth_animate_counter =  smooth_animate_counter+1
+        // $('html, body').animate({
+        //    scrollTop: smooth_animate_counter
+        // },0);
+        scrolling(smooth_animate_counter)
+
+                    var sc_p =  smooth_animate_counter
+                    var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                    $('.bar').css({'margin-left':sc_p_b+'px'})
+        if(first){
+            setTimeout(function(){
+                smooth_animate()
+            },1)
+        }
+    }
+    function get_back_pos(speedforsec,pos_top){
+        var array = []
+        if(!isMobile){
+            for (var i = 0; i < back_img.length; i++) {
+                array.push(parseInt(back_img[i][1])*speedforsec*(w/back_img.length)+(w/2 - 5.35/6*h) + 'px '+(-1*pos_top)+'px')
+                if(i == back_img.length-1){
+                    return array.join()
+                }
+            } 
+        }else{
+            $('.elem').css({'background-size':'100vw'})
+            for (var i = 0; i < back_img.length; i++) {
+                array.push(parseInt(back_img[i][1])*speedforsec*(w/back_img.length) + 'px '+(-1*pos_top)+'px')
+                if(i == back_img.length-1){
+                    return array.join()
+                }
+            } 
+        }
+    }
+var g_posx 
+var g_posy 
+var stop = false
+var preposx = 0
+var movedamount = 0
+var animate_counter_new = 0
+var audioframe = 0
+var scrolltop
+function scrolling(amount){
+    console.log(amount)
+    scrolltop = amount
+                if(!stop && !first && !last){
+                    animate_counter_new = Math.round( scrolltop / (0.1 * w))
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density)
+                }else if(stop){
+                    console.log('-------------------------------------')
+                    console.log(w/back_img.length*back_img[animate_counter_new][1]*density)
+                    console.log(movedamount)
+                    console.log(scrollbarcounter )
+                    console.log(w/back_img.length*back_img[animate_counter_new][1]*density +movedamount + scrollbarcounter)
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density +movedamount + scrollbarcounter) 
+                }else if(last){
+                    syncscroll(w/back_img.length*back_img[animate_counter_new][1]*density +lastamount) 
+                }else{
+                    syncscroll( amount)
+                }
+}
+
+    var animate_counter = 0
+    function animate(){
+        $('.elem').addClass('animate')
+        animate_counter++
+        if(animate_counter > 74 && animate_counter <118){
+            $('.elem').css({'background-color':'#9090903d'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(144 144 144), rgb(255 255 255 / 0%), rgb(255 255 255 / 0%), rgb(111 111 111))'})
+            $('body').css({'background-image':'url(bg.png)'})
+        }else if(animate_counter > 118 && animate_counter <162){
+            $('.elem').css({'background-color':'#9090903d'})
+            // $('.elem>div').css({'background':'linear-gradient(rgb(26 0 167), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgb(26 0 167))'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
+            $('.back').show()
+        }else if(animate_counter > 161 && animate_counter <198){
+            $('.elem').css({'background-color':'#9090903d'})
+            $('.elem>div').css({'background':'linear-gradient(rgb(195 195 195), rgb(27, 27, 27),rgb(195 195 195))'})
+            $('.back').show()
+        }else{
+            $('.elem').css({'background-color':'#eeeeee'})
+            $('.elem>div').css({'background':'linear-gradient(#ffffff, #1b1b1b, #ffffff)'})
+            $('.back').hide()
+        }
+        if(animate_counter < back_img.length && date < 185184){
+                if(!stop){
+                    var sc_p =  animate_counter * 0.1 * w
+                    var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                    scrolling( animate_counter * 0.1 * w)
+                    // $('html, body').animate({
+                    //    scrollTop:
+                    // },0);
+                    $('.bar').css({'margin-left':sc_p_b+'px'})
+                }
+                scroll_ani = setTimeout(function(){
+                    animate()
+                },170)
+        }else{
+            $('.elem').removeClass('animate')
+            if(date > 185184){
+                last = true
+                lastamount = 0
+                lastanimate_counter = 0
+                lastanimate()
+            }
+        }
+    }
+    var lastanimate_counter = 0
+    function lastanimate(){
+        lastanimate_counter ++
+        lastamount++
+        if(lastanimate_counter<3000){
+                    setTimeout(function(){lastanimate()},1)
+                    var sc_p =  animate_counter * 0.1 * w + lastamount
+                    var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                    scrolling( animate_counter * 0.1 * w + lastamount)
+                            $('.bar').css({'margin-left':sc_p_b+'px'})
+                        }else{
+                            // location.reload();
+                        }
+    }
+    var audio = document.getElementsByTagName('audio')[0]
+    function syncscroll(scroll){
+        $('.elem').each(function(){
+            var speedforsec = $(this).attr('class').split('elem_')[1].split(' ')[0]
+        // console.log('syecsdfsdf----'+-1*speedforsec*scroll)
+            $(this).css({'margin-left':-1*speedforsec*scroll})
+        })
+    }
+
+            document.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                console.log(e.touches[0])
+                g_posx = e.touches[0].x
+                g_posy = e.touches[0].y
+                motion('down', g_posx, g_posy)
+                console.log('--------------------------------------------')
+            });
+            // document.addEventListener('touchmove', function (e) {
+            //     g_posx = e.touches[0].clientX
+            //     g_posy = e.touches[0].clientY
+            //     console.log(e.touches[0].y)
+            //     motion('move', g_posx, g_posy)
+            // });
+            document.addEventListener('touchend', function (e) {
+                motion('up', 0, 0)
+            });
+            document.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                g_posx = e.pageX
+                g_posy = e.pageY
+                motion('down', g_posx, g_posy)
+                selected_array.push(date)
+            });
+            document.addEventListener('mousemove', function (e) {
+                g_posx = e.pageX
+                g_posy = e.pageY
+                motion('move', g_posx, g_posy)
+            });
+            document.addEventListener('mouseup', function (e) {
+                motion('up', 0, 0)
+            });
+            var date
+            var org_date
+            var ani_step = 0
+            var scrollbarcounter = 0
+            var barclick = false
+            var init_scrolltop
+            function motion(res, posx, posy) {
+                if (res == 'down' && !first) { 
+                    $('.elem').removeClass('animate') 
+                    preposx = posx
+                    scrollbarcounter = 0
+                    stop = true
+                    init_scrolltop = scrolltop
+                    if(posy > 0.95*h || isMobile){
+                        console.log('------')
+                        navigate()
+                    }
+                }
+                if (res == 'down' && first) { 
+                    $('audio').get(0).play();
+                    $('.popup').hide()
+                    $('body').css({'filter':'none'})
+                    org_date = new Date().getTime()
+                    getaudioduration()
+                    first = false
+                    animate()
+                }
+                if (res == 'move' && stop) {
+                        console.log('**********************')
+                        console.log(0.95*h)
+                        console.log(posy)
+                    $('.elem').removeClass('animate')
+                    movedamount = preposx - posx
+                    if(posy < 0.95*h){
+                        console.log('nobarclick')
+                        console.log(parseInt(scrolltop))
+                        var sc_p =  scrolltop + (preposx - posx)/10
+                        var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                        scrolling(scrolltop + (preposx - posx)/10)
+                            $('.bar').css({'margin-left':sc_p_b+'px'})
+                    }else if(barclick){
+                        console.log('---------------------------barclick')
+                        console.log('barclick')
+                            $('.bar').css({'marginLeft':g_posx+'px'}) 
+                    }
+                }
+                if (res == 'up' || res == "out") { 
+                    $('.elem').addClass('animate') 
+                    preposx = posx
+                    barclick = false
+                    stop = false
+                    console.log('--------------------------------------')
+                }
+            }   
+            function navigate(){
+                        console.log('------000')
+                        if(g_posx > parseInt($('.bar').css('marginLeft'),10) + $('.bar').outerWidth() || isMobile){
+                        console.log('------1')
+                            scrollbarcounter = scrollbarcounter +3
+                            var sc_p =  scrolltop + scrollbarcounter
+                            var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                            scrolling(sc_p)
+                            $('.bar').css({'margin-left':sc_p_b+'px'})
+
+                        }else if(g_posx < parseInt($('.bar').css('marginLeft'),10)){
+                        console.log('------2')
+                            scrollbarcounter = scrollbarcounter -3
+                            var sc_p =  scrolltop + scrollbarcounter
+                            var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                            scrolling(sc_p)
+                            $('.bar').css({'margin-left':sc_p_b+'px'})
+                        }else{
+                            barclick =true
+                            console.log('--------')
+                            console.log(g_posx)
+                            var sc_p =  scrolltop + scrollbarcounter
+                            var sc_p_b =  sc_p/(0.1*w)*(w-$('.bar').outerWidth())/330
+                            scrolling(sc_p)
+                        }
+                setTimeout(function(){
+                    if(stop){navigate()}
+                },100)
+            }
+            function getaudioduration(){
+                audioframe ++ 
+                date = new Date().getTime() - org_date
+                // console.log(date)
+
+                // console.log(audioframe)
+                if(date > 4685 && ani_step == 0){
+                    ani_step = 1
+                    animate_counter = 4
+                }
+                if(date > 9353 && ani_step == 1){
+                    ani_step = 2
+                    animate_counter = 4
+                }
+                if(date > 13400 && ani_step == 2){
+                    ani_step = 3
+                    animate_counter = 4
+                }
+                if(date > 22000 && ani_step == 3){
+                    ani_step = 4
+                    animate_counter = 26
+                }
+                if(date > 22085 && ani_step == 4){
+                    ani_step = 5
+                    animate_counter = 26
+                }
+                if(date > 30336 && ani_step == 5){
+                    ani_step = 6
+                    animate_counter = 26
+                }
+                if(date > 39000 && ani_step == 6){
+                    ani_step = 7
+                    animate_counter = 41
+                }
+                if(date > 43510 && ani_step == 7){
+                    ani_step = 8
+                    animate_counter = 41
+                }
+                if(date > 47730 && ani_step == 8){
+                    ani_step = 9
+                    animate_counter = 41
+                }
+                if(date > 60690 && ani_step == 9){
+                    ani_step = 10
+                    animate_counter = 68
+                }
+                if(date > 78133 && ani_step == 10){
+                    ani_step = 11
+                    animate_counter = 81
+                }
+                if(date > 103902 && ani_step == 11){
+                    ani_step = 12
+                    animate_counter = 26
+                }
+                if(date > 115000 && ani_step == 12){
+                    $('body').css({'background-image':'none'})
+                    // $('.elem').css({'opacity':0.9})
+                }
+                if(date > 118800 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.8})
+                }
+                if(date > 119000 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.7})
+                }
+                if(date > 119200 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.6})
+                }
+                if(date > 119400 && ani_step == 12){
+                    // $('.elem').css({'opacity':0.5})
+                }
+                if(date > 119600 && ani_step == 12){
+                    $('.elem').css({'opacity':0.8})
+                }
+                if(date > 119800 && ani_step == 12){
+                    $('.elem').css({'opacity':0.6})
+                }
+                if(date > 120000 && ani_step == 12){
+                    $('.elem').css({'opacity':0.4})
+                }
+                if(date > 120200 && ani_step == 12){
+                    $('.elem').css({'opacity':0.2})
+                    ani_step = 13
+                    animate_counter = 240
+                }
+                if(date > 120400 && ani_step == 13){
+                    $('.elem').css({'opacity':1})
+                }
+                    // console.log(animate_counter)
+                if(animate_counter > back_img.length-2 && ani_step == 13){
+                    animate_counter = 240
+                }
+                if(date > 146795 && ani_step == 13){
+                    ani_step = 14
+                    animate_counter = 181
+                }
+                if(date > 154780 && ani_step == 14){
+                    ani_step = 15
+                    animate_counter = 68
+                }
+                if(date > 163658 && ani_step == 15){
+                    ani_step = 16
+                    animate_counter = 38
+                }
+                if(date > 178000 && ani_step == 16){
+                    ani_step = 17
+                    animate_counter = 4
+                }
+                globalID = requestAnimationFrame(getaudioduration);
+            }
+
+})
+</script>
+</head>
+<body>
+    <div class="popup">&nbsp;</div>
+    <audio src="thanksforvisiting.mp3"></audio>
+    <div class="back"></div>
+    <div class="bar_wrapper">
+        <div class="bar"></div>
+    </div>
+</body>
